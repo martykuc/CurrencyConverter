@@ -2,9 +2,7 @@ package com.example.demo.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.InvalidCurrencyException;
@@ -14,15 +12,11 @@ import com.example.demo.utils.CurrencyConverter;
 @Service
 public class CurrencyRateService implements CurrencyConverter {
 
-    @Value("#{${currency.rate}}")
-    private Map<Currency, BigDecimal> rates;
-
     public BigDecimal getCurrencyRate(
             String mainCurrencyString,
             String moneyCurrencyString,
             BigDecimal amount
-    ) throws InvalidCurrencyException {
-
+    ) {
         Currency mainCurrency = convertToCurrencyEnum(mainCurrencyString);
         Currency moneyCurrency = convertToCurrencyEnum(moneyCurrencyString);
         return calculateRate(mainCurrency, moneyCurrency, amount);
@@ -41,17 +35,14 @@ public class CurrencyRateService implements CurrencyConverter {
         }
 
         if (moneyCurrency == Currency.DKK) {
-            BigDecimal mainCurrencyRate = rates.get(mainCurrency);
-            calculatedCurrencyRate = mainCurrencyRate.divide(
+            calculatedCurrencyRate = mainCurrency.getRate().divide(
                     BigDecimal.valueOf(100),
                     4,
                     RoundingMode.UP
             ).multiply(amount);
         } else {
-            BigDecimal mainCurrencyDkkRate = rates.get(mainCurrency);
-            BigDecimal moneyCurrencyDkkRate = rates.get(moneyCurrency);
-            calculatedCurrencyRate = mainCurrencyDkkRate.divide(
-                    moneyCurrencyDkkRate,
+            calculatedCurrencyRate = mainCurrency.getRate().divide(
+                    moneyCurrency.getRate(),
                     4,
                     RoundingMode.UP
             ).multiply(amount);
@@ -60,7 +51,7 @@ public class CurrencyRateService implements CurrencyConverter {
         return calculatedCurrencyRate;
     }
 
-    public Currency convertToCurrencyEnum(String currency) throws InvalidCurrencyException {
+    public Currency convertToCurrencyEnum(String currency) {
         try {
             return Currency.valueOf(currency);
         } catch (IllegalArgumentException e) {
