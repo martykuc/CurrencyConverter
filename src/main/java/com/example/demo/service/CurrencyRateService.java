@@ -28,27 +28,16 @@ public class CurrencyRateService implements CurrencyConverter {
             Currency moneyCurrency,
             BigDecimal amount
     ) {
-        BigDecimal calculatedCurrencyRate = amount;
 
         if (mainCurrency == moneyCurrency) {
-            return calculatedCurrencyRate;
+            return amount;
         }
 
-        if (moneyCurrency == Currency.DKK) {
-            calculatedCurrencyRate = mainCurrency.getRate().divide(
-                    BigDecimal.valueOf(100),
-                    4,
-                    RoundingMode.UP
-            ).multiply(amount);
-        } else {
-            calculatedCurrencyRate = mainCurrency.getRate().divide(
-                    moneyCurrency.getRate(),
-                    4,
-                    RoundingMode.UP
-            ).multiply(amount);
-        }
-
-        return calculatedCurrencyRate;
+        return mainCurrency.getRate().divide(
+                moneyCurrency.getRate(),
+                4,
+                RoundingMode.UP
+        ).multiply(amount);
     }
 
     public Currency convertToCurrencyEnum(String currency) {

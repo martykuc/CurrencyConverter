@@ -12,7 +12,7 @@ public enum Currency {
     JPY(BigDecimal.valueOf(75.74)),
     DKK(BigDecimal.valueOf(100));
 
-    private BigDecimal rate;
+    private final BigDecimal rate;
 
     Currency(BigDecimal rate) {
         this.rate = rate;
@@ -21,4 +21,5 @@ public enum Currency {
     public BigDecimal getRate() {
         return rate;
     }
+
 }
