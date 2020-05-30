@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.service.CurrencyRateService;
 
@@ -18,6 +19,7 @@ public class CurrencyRateController {
     }
 
     @GetMapping("/currency/rate")
+    @ResponseBody
     public BigDecimal getCurrencyRate(
             @RequestParam String mainCurrency,
             @RequestParam String moneyCurrency,
