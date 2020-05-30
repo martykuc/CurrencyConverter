@@ -8,6 +8,6 @@ How to run the application:
 Example GET request:
 `http://localhost:8080/currency/rate?mainCurrency=EUR&moneyCurrency=USD&amount=1`
 
-Hot to run tests:
+How to run tests:
 1. Navigate to the root 
 2. Run command `./gradlew test`
